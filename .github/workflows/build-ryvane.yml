@@ -25,6 +25,11 @@ jobs:
           $b64 = ($parts | ForEach-Object { Get-Content $_.FullName -Raw }) -join ''
           [IO.File]::WriteAllBytes("$PWD\ryvane-src.tar.xz", [Convert]::FromBase64String($b64))
           tar -xJf ryvane-src.tar.xz -C app
+          $main = Get-Content app\electron\main.ts -Raw
+          $main = $main.Replace(', nativeImage', '')
+          $main = $main -replace '(?m)^\s*const icon = nativeImage\.createFromPath\(iconPath\);\r?\n', ''
+          $main = $main -replace '(?m)^\s*icon: icon\.isEmpty\(\) \? undefined : icon,\r?\n', ''
+          Set-Content app\electron\main.ts $main -NoNewline
 
       - name: Install dependencies
         working-directory: app
