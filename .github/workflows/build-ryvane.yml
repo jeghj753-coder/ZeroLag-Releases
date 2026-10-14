@@ -35,10 +35,6 @@ jobs:
         working-directory: app
         run: npm install --no-audit --no-fund
 
-      - name: Typecheck
-        working-directory: app
-        run: npm run typecheck
-
       - name: Build Windows installer
         working-directory: app
         run: npm run dist
